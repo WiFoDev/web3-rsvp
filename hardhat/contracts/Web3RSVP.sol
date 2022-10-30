@@ -51,10 +51,10 @@ contract Web3RSVP {
     }
 
     function rsvpEventById(bytes32 _id) external payable {
-        Event storage eventFound = events[_id];
-
         // Validate event exists
-        require(eventFound.date != 0, "NO EVENT WAS FOUND");
+        validateEventExists(_id);
+
+        Event storage eventFound = events[_id];
 
         // Validate minimunt amount less than equal amount sent
         require(
@@ -79,9 +79,10 @@ contract Web3RSVP {
     }
 
     function checkInAttendee(address attendee, bytes32 _eventID) external {
-        Event storage eventFound = events[_eventID];
+        // Validate event exists
+        validateEventExists(_eventID);
 
-        require(eventFound.date != 0, "NO EVENT WAS FOUND");
+        Event storage eventFound = events[_eventID];
 
         require(msg.sender == eventFound.creator, "NOT AUTHORIZED");
 
@@ -98,5 +99,37 @@ contract Web3RSVP {
         (bool success, ) = attendee.call{value: eventFound.depositAmount}("");
 
         require(success, "COULD NOT SEND THE DEPOSIT BACK");
+    }
+
+    function withdrawUnclaimedDepositsByEventId(bytes32 _eventId) external {
+        validateEventExists(_eventId);
+
+        Event storage eventFound = events[_eventId];
+
+        require(eventFound.creator == msg.sender, "NOT AUTHORIZED");
+
+        require(!eventFound.paidOut, "UNCLAIMED DEPOSITS ALREADY CLAIMED");
+
+        require(
+            block.timestamp >= (eventFound.date + 7 days),
+            "TOO EARLY TO CLAIM DEPOSITS"
+        );
+
+        uint unclaimedDeposits = eventFound.confirmedRsvpCounter -
+            eventFound.confirmedCheckInCounter;
+
+        require(!(unclaimedDeposits == 0), "DONT HAVE FUNDS TO WITHDRAW");
+
+        uint amountToWithdraw = unclaimedDeposits * eventFound.depositAmount;
+
+        (bool success, ) = msg.sender.call{value: amountToWithdraw}("");
+
+        require(success, "FAILED TO SEND ETHER");
+
+        eventFound.paidOut = true;
+    }
+
+    function validateEventExists(bytes32 _eventId) internal view {
+        require(events[_eventId].date != 0, "NO EVENT WAS FOUND");
     }
 }
