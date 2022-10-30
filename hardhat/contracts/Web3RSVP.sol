@@ -18,7 +18,7 @@ contract Web3RSVP {
 
     event NewCheckIn(bytes32 eventId, address attendee);
 
-    event DepositsPaidOut(bytes eventID);
+    event DepositsPaidOut(bytes32 eventID);
 
     struct Event {
         bytes32 id;
@@ -100,6 +100,8 @@ contract Web3RSVP {
         eventFound.confirmedRsvp[payable(msg.sender)] = true;
 
         eventFound.confirmedRsvpCounter++;
+
+        emit NewRSVP(_id, msg.sender);
     }
 
     function checkInAttendee(address attendee, bytes32 _eventID) external {
@@ -123,6 +125,8 @@ contract Web3RSVP {
         (bool success, ) = attendee.call{value: eventFound.depositAmount}("");
 
         require(success, "COULD NOT SEND THE DEPOSIT BACK");
+
+        emit NewCheckIn(_eventID, attendee);
     }
 
     function withdrawUnclaimedDepositsByEventId(bytes32 _eventId) external {
@@ -151,6 +155,7 @@ contract Web3RSVP {
         require(success, "FAILED TO SEND ETHER");
 
         eventFound.paidOut = true;
+        emit DepositsPaidOut(_eventId);
     }
 
     function validateEventExists(bytes32 _eventId) internal view {
