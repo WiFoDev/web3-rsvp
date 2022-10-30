@@ -77,4 +77,26 @@ contract Web3RSVP {
 
         eventFound.confirmedRsvpCounter++;
     }
+
+    function checkInAttendee(address attendee, bytes32 _eventID) external {
+        Event storage eventFound = events[_eventID];
+
+        require(eventFound.date != 0, "NO EVENT WAS FOUND");
+
+        require(msg.sender == eventFound.creator, "NOT AUTHORIZED");
+
+        require(
+            eventFound.confirmedRsvp[attendee],
+            "ADDRESS NOT FOUND IN RSVP LIST"
+        );
+
+        require(!eventFound.confirmedCheckIn[attendee], "ALREADY CHECK IN");
+
+        eventFound.confirmedCheckIn[attendee] = true;
+        eventFound.confirmedCheckInCounter++;
+
+        (bool success, ) = attendee.call{value: eventFound.depositAmount}("");
+
+        require(success, "COULD NOT SEND THE DEPOSIT BACK");
+    }
 }
