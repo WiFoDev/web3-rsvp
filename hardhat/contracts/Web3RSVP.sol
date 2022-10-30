@@ -12,12 +12,14 @@ contract Web3RSVP {
         uint date;
         uint capacity;
         uint depositAmount;
-        address[] confirmedRsvp;
-        address[] confirmedCheckIn;
+        uint confirmedRsvpCounter;
+        uint confirmedCheckInCounter;
+        mapping(address => bool) confirmedRsvp;
+        mapping(address => bool) confirmedCheckIn;
         bool paidOut;
     }
 
-    mapping(bytes32 => Event) eventById;
+    mapping(bytes32 => Event) events;
 
     function createEvent(
         string calldata _dataCID,
@@ -36,18 +38,43 @@ contract Web3RSVP {
             )
         );
 
-        require(eventById[_id].date == 0, "THERE IS A EVENT WITH THE SAME ID");
+        require(events[_id].date == 0, "THERE IS A EVENT WITH THE SAME ID");
 
         // Initialize a new event
-        Event memory newEvent;
+        Event storage newEvent = events[_id];
         newEvent.id = _id;
         newEvent.dataCID = _dataCID;
         newEvent.creator = msg.sender;
         newEvent.date = _date;
         newEvent.capacity = _capacity;
         newEvent.depositAmount = _depositAmount;
+    }
 
-        // Add the new Event to list of Events
-        eventById[_id] = newEvent;
+    function rsvpEventById(bytes32 _id) external payable {
+        Event storage eventFound = events[_id];
+
+        // Validate event exists
+        require(eventFound.date != 0, "NO EVENT WAS FOUND");
+
+        // Validate minimunt amount less than equal amount sent
+        require(
+            msg.value == eventFound.depositAmount,
+            "NOT ENOUGH FUNDS FOR THE EVENT RSVP"
+        );
+
+        // Validate event has not started
+        require(block.timestamp < eventFound.date, "EVENT STARTED");
+
+        // Validate event capacity
+        require(
+            eventFound.confirmedRsvpCounter < eventFound.capacity,
+            "EVENT HAS REACHED CAPACITY"
+        );
+
+        require(!eventFound.confirmedRsvp[msg.sender], "ALREADY IN RSVP");
+
+        eventFound.confirmedRsvp[payable(msg.sender)] = true;
+
+        eventFound.confirmedRsvpCounter++;
     }
 }
