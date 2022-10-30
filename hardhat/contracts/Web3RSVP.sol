@@ -5,6 +5,21 @@ pragma solidity ^0.8.9;
 // import "hardhat/console.sol";
 
 contract Web3RSVP {
+    event NewEventCreated(
+        bytes32 eventId,
+        address creator,
+        uint date,
+        uint capacity,
+        uint deposit,
+        string eventDataCID
+    );
+
+    event NewRSVP(bytes32 eventId, address attendee);
+
+    event NewCheckIn(bytes32 eventId, address attendee);
+
+    event DepositsPaidOut(bytes eventID);
+
     struct Event {
         bytes32 id;
         string dataCID;
@@ -48,6 +63,15 @@ contract Web3RSVP {
         newEvent.date = _date;
         newEvent.capacity = _capacity;
         newEvent.depositAmount = _depositAmount;
+
+        emit NewEventCreated(
+            _id,
+            msg.sender,
+            _date,
+            _capacity,
+            _depositAmount,
+            _dataCID
+        );
     }
 
     function rsvpEventById(bytes32 _id) external payable {
