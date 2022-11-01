@@ -13,6 +13,9 @@ const config: HardhatUserConfig = {
       url: ALCHEMY_API_KEY_URL,
       accounts: [PRIVATE_KEY]
     }
+  },
+  etherscan: {
+    apiKey: process.env.POLYGON_SCAN_API_KEY
   }
 };
 
