@@ -1,12 +1,14 @@
 import type {NextPage} from "next";
 
+import {ConnectButton} from "@rainbow-me/rainbowkit";
+
 import {Layout} from "@/Layout";
 
 const Home: NextPage = () => {
   return (
-    <Layout>
-      <section>Welcome</section>
-    </Layout>
+    <section>
+      <ConnectButton />
+    </section>
   );
 };
 
