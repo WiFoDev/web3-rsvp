@@ -1,4 +1,6 @@
+import {ConnectButton} from "@rainbow-me/rainbowkit";
 import Head from "next/head";
+import Link from "next/link";
 import React from "react";
 
 type LayoutProps = {
@@ -14,9 +16,18 @@ export const Layout = ({children}: LayoutProps) => {
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <header className="sticky top-0 z-20 w-full">
-        <nav className="flex pointer-events-none h-16 mx-auto max-w-screen-standar items-center justify-end gap-2 pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]">
-          <div className="mr-auto text-xl">My APP</div>
-          <ul className="text-lg">Navigation List For The Page</ul>
+        <nav className="flex h-16 mx-auto max-w-screen-standar items-center justify-end gap-2 pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]">
+          <div className="mr-auto text-xl">
+            <Link href="/">Web3RSVP</Link>
+          </div>
+          <ul className="flex items-center gap-4">
+            <li>
+              <Link href="/create-event">Create New Event</Link>
+            </li>
+            <li>
+              <ConnectButton />
+            </li>
+          </ul>
         </nav>
       </header>
       <main className="relative flex flex-col items-center justify-center w-full h-full">
