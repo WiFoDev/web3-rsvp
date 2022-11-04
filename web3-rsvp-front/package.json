@@ -14,7 +14,8 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "wagmi": "^0.7.10"
+    "wagmi": "^0.7.10",
+    "web3.storage": "^4.4.0"
   },
   "devDependencies": {
     "@types/node": "18.11.4",
