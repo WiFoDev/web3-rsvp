@@ -1,0 +1,169 @@
+export const address = "0xDaf1e0f2986D4442d0EF6fCDE4d5c49D217C9b6c";
+export const abi = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "eventID",
+        type: "bytes32",
+      },
+    ],
+    name: "DepositsPaidOut",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "eventId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "attendee",
+        type: "address",
+      },
+    ],
+    name: "NewCheckIn",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "eventId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "creator",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "date",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "capacity",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "deposit",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "eventDataCID",
+        type: "string",
+      },
+    ],
+    name: "NewEventCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "eventId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "attendee",
+        type: "address",
+      },
+    ],
+    name: "NewRSVP",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "attendee",
+        type: "address",
+      },
+      {
+        internalType: "bytes32",
+        name: "_eventID",
+        type: "bytes32",
+      },
+    ],
+    name: "checkInAttendee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_dataCID",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "_date",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_capacity",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_depositAmount",
+        type: "uint256",
+      },
+    ],
+    name: "createEvent",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_id",
+        type: "bytes32",
+      },
+    ],
+    name: "rsvpEventById",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_eventId",
+        type: "bytes32",
+      },
+    ],
+    name: "withdrawUnclaimedDepositsByEventId",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+] as const;
