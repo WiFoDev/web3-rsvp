@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {useForm, SubmitHandler} from "react-hook-form";
+import {useForm} from "react-hook-form";
 
 import {DateTimeInput, Input} from "@/components";
 
@@ -28,27 +28,28 @@ const CreateEvent: NextPage = () => {
     image,
   }: EventInputs) => {
     const dateTime = new Date(`${date}T${time}`).getTime();
-    const formData = new FormData();
 
+    const formData = new FormData();
     formData.append("image", image[0]);
     formData.append("name", name);
+    formData.append("link", link);
+    formData.append("description", description)
 
-    const newEvent = {
-      name,
-      dateTime,
-      capacity,
-      refundable,
-      link,
-      description,
-      image: formData,
-    };
-
-    const response = await fetch("http://localhost:3000/api/event", {
+    const {cid, success} = await fetch("http://localhost:3000/api/event", {
       method: "POST",
       body: formData,
     }).then((res) => res.json());
 
-    console.log(response);
+    if (success) {
+      const newEvent = {
+        capacity,
+        cid,
+        dateTime,
+        refundable,
+      };
+      console.log(newEvent)
+    }    
+    
   };
 
   return (
