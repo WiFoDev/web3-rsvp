@@ -8,6 +8,8 @@ type InputPropTypes = {
   type: string;
   placeholder: string;
   textArea?: boolean;
+  min?: number;
+  step?: number;
 };
 
 export const Input = ({
@@ -17,6 +19,8 @@ export const Input = ({
   type,
   placeholder,
   textArea,
+  min,
+  step,
 }: InputPropTypes) => {
   if (textArea)
     return (
@@ -35,7 +39,9 @@ export const Input = ({
     <label className="flex items-center">
       <span className="basis-1/3">{label}</span>
       <input
+        min={min}
         placeholder={placeholder}
+        step={step}
         type={type}
         {...register(id)}
         className="p-2 transition-all duration-200 bg-transparent border-2 border-b-2 border-transparent rounded outline-none border-b-white focus:border-white basis-2/3"
