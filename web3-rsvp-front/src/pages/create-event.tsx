@@ -1,6 +1,5 @@
 import {NextPage} from "next";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {useRef} from "react";
 
 import {DateTimeInput, Input} from "@/components";
 

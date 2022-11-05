@@ -1,9 +1,8 @@
 import multer from "multer";
 import {NextApiRequest, NextApiResponse} from "next";
 import nextConnect from "next-connect";
-import { Filelike } from "web3.storage";
 
-import {makeFileObjects, storeFiles} from "../services";
+import {deleteImageFile, makeFileObjects, storeFiles} from "../services";
 import {ExtendedReq} from "../types";
 
 export const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
@@ -31,10 +30,12 @@ apiRoute.use(upload.single("image"));
 
 apiRoute.post<ExtendedReq>(async (req, res) => {
   const {body, file} = req;
+  const imagePath = file.path;
 
   try {
-    const files = await makeFileObjects(body, file);
+    const files = await makeFileObjects(body, imagePath);
     const cid = await storeFiles(files);
+    deleteImageFile(imagePath);
     return res.status(200).json({success: true, cid});
   } catch (e) {
     return res.status(500).json({
