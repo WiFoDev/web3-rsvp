@@ -7,6 +7,7 @@ type InputPropTypes = {
   register: UseFormRegister<any>;
   type: string;
   placeholder: string;
+  textArea?: boolean;
 };
 
 export const Input = ({
@@ -15,7 +16,21 @@ export const Input = ({
   id,
   type,
   placeholder,
+  textArea,
 }: InputPropTypes) => {
+  if (textArea)
+    return (
+      <label className="flex items-center">
+        <span className="basis-1/3">{label}</span>
+        <textarea
+          placeholder={placeholder}
+          {...register(id)}
+          className="p-2 transition-all duration-200 bg-transparent border-2 border-b-2 border-transparent rounded outline-none border-b-white focus:border-white basis-2/3"
+          rows={10}
+        />
+      </label>
+    );
+
   return (
     <label className="flex items-center">
       <span className="basis-1/3">{label}</span>

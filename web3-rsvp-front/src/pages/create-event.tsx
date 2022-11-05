@@ -49,17 +49,33 @@ const CreateEvent: NextPage = () => {
         <Input
           id="capacity"
           label="Max capacity"
-          placeholder="Enter the capacity..."
+          placeholder="Enter capacity..."
           register={register}
           type="number"
         />
         <Input
           id="refundable"
           label="Refundable deposit"
-          placeholder="Enter the amount..."
+          placeholder="Enter amount..."
           register={register}
           type="number"
         />
+        <Input
+          id="link"
+          label="Event link"
+          placeholder="Enter url..."
+          register={register}
+          type="text"
+        />
+        <Input
+          textArea
+          id="description"
+          label="Event description"
+          placeholder="Enter an amazing description..."
+          register={register}
+          type="text"
+        />
+
         <button>Send</button>
       </form>
     </section>
