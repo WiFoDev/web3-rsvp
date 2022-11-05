@@ -11,8 +11,11 @@ export const Layout = ({children}: LayoutProps) => {
   return (
     <>
       <Head>
-        <title>APP</title>
-        <meta content="The next generation app" name="My App" />
+        <title>Web3RSVP</title>
+        <meta
+          content="Descentralize Events Platform"
+          name="Web3RSVP"
+        />
         <link href="/favicon.ico" rel="icon" />
       </Head>
       <header className="sticky top-0 z-20 w-full">
@@ -21,7 +24,7 @@ export const Layout = ({children}: LayoutProps) => {
             <Link href="/">Web3RSVP</Link>
           </div>
           <ul className="flex items-center gap-4">
-            <li>
+            <li className="border-[1px] border-primary rounded p-2 text-primary text-sm hover:bg-primary hover:border-none hover:text-white transition duration-500">
               <Link href="/create-event">Create New Event</Link>
             </li>
             <li>

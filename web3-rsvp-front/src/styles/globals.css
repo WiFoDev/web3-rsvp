@@ -18,3 +18,11 @@ h1 {
 p { 
   @apply text-parragraf;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  content: url('../assets/calendar.svg');
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  content: url('../assets/clock.svg');
+}

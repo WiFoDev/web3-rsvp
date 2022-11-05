@@ -20,7 +20,8 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
       },
       content: {
-        example: "url('../assets/brush.png')",
+        calendar: "url('../assets/calendar.svg')",
+        clock: "url('../assets/clock.svg')",
       },
       keyframes: {
         slideIn: {

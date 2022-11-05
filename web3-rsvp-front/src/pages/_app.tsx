@@ -20,7 +20,7 @@ import {Layout} from "@/Layout";
 const {chains, provider} = configureChains(
   [chain.polygonMumbai],
   [
-    alchemyProvider({apiKey: process.env.NETX_PUBLIC_ALCHEMY_ID}),
+    alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID}),
     publicProvider(),
   ],
 );
