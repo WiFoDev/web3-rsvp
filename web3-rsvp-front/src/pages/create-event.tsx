@@ -9,6 +9,8 @@ type EventInputs = {
   time: string;
   capacity: string;
   refundable: string;
+  link: string;
+  description: string;
 };
 
 const CreateEvent: NextPage = () => {
@@ -20,6 +22,8 @@ const CreateEvent: NextPage = () => {
     time,
     capacity,
     refundable,
+    link,
+    description,
   }: EventInputs) => {
     const dateTime = new Date(`${date}T${time}`);
 
