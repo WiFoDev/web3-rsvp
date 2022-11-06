@@ -2,7 +2,11 @@ import multer from "multer";
 import {NextApiRequest, NextApiResponse} from "next";
 import nextConnect from "next-connect";
 
-import {deleteImageFile, makeFileObjects, storeFiles} from "../services";
+import {
+  deleteImageFile,
+  makeFileObjects,
+  storeFiles,
+} from "../services";
 import {ExtendedReq} from "../types";
 
 export const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
@@ -33,9 +37,11 @@ apiRoute.post<ExtendedReq>(async (req, res) => {
   const imagePath = file.path;
 
   try {
-    const files = await makeFileObjects(body, imagePath);
+    const files = await makeFileObjects(body, file);
     const cid = await storeFiles(files);
+
     deleteImageFile(imagePath);
+
     return res.status(200).json({success: true, cid});
   } catch (e) {
     return res.status(500).json({

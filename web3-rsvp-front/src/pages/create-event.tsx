@@ -61,13 +61,6 @@ const CreateEvent: NextPage = () => {
     ).then((res) => res.json());
 
     if (success) {
-      // const newEventArgs = [
-      //   cid as string,
-      //   BigNumber.from(dateTime),
-      //   BigNumber.from(capacity),
-      //   BigNumber.from(parseFloat(refundable)),
-      // ];
-
       if (!write) return;
       write({
         recklesslySetUnpreparedArgs: [
