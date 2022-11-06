@@ -38,7 +38,7 @@ export const Layout = ({children}: LayoutProps) => {
       </main>
       <footer className="relative pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto max-w-screen-standar py-12 flex justify-center pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]">
-          Here is the footer section
+          Made with love by WiFo ❤️
         </div>
       </footer>
     </>

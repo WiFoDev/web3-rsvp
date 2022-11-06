@@ -1,7 +1,10 @@
 import {NextPage} from "next";
 import {useForm} from "react-hook-form";
+import {useContractWrite, usePrepareContractWrite} from "wagmi";
+import {BigNumber, ethers, utils} from "ethers";
 
 import {DateTimeInput, Input} from "@/components";
+import {abi, address} from "@/utils/web3rsvp";
 
 type EventInputs = {
   name: string;
@@ -16,6 +19,19 @@ type EventInputs = {
 
 const CreateEvent: NextPage = () => {
   const {register, handleSubmit} = useForm<EventInputs>();
+  const {config} = usePrepareContractWrite({
+    address,
+    abi,
+    functionName: "createEvent",
+    args: [
+      "",
+      BigNumber.from(0),
+      BigNumber.from(0),
+      BigNumber.from(0),
+    ],
+  });
+  const {data, isLoading, isSuccess, write} =
+    useContractWrite(config);
 
   const onSubmit = async ({
     name,
@@ -30,26 +46,38 @@ const CreateEvent: NextPage = () => {
     const dateTime = new Date(`${date}T${time}`).getTime();
 
     const formData = new FormData();
+
     formData.append("image", image[0]);
     formData.append("name", name);
     formData.append("link", link);
-    formData.append("description", description)
+    formData.append("description", description);
 
-    const {cid, success} = await fetch("http://localhost:3000/api/event", {
-      method: "POST",
-      body: formData,
-    }).then((res) => res.json());
+    const {cid, success} = await fetch(
+      "http://localhost:3000/api/event",
+      {
+        method: "POST",
+        body: formData,
+      },
+    ).then((res) => res.json());
 
     if (success) {
-      const newEvent = {
-        capacity,
-        cid,
-        dateTime,
-        refundable,
-      };
-      console.log(newEvent)
-    }    
-    
+      // const newEventArgs = [
+      //   cid as string,
+      //   BigNumber.from(dateTime),
+      //   BigNumber.from(capacity),
+      //   BigNumber.from(parseFloat(refundable)),
+      // ];
+
+      if (!write) return;
+      write({
+        recklesslySetUnpreparedArgs: [
+          cid as string,
+          BigNumber.from(dateTime),
+          BigNumber.from(capacity),
+          utils.parseEther(refundable),
+        ],
+      });
+    }
   };
 
   return (
@@ -112,7 +140,9 @@ const CreateEvent: NextPage = () => {
           type="text"
         />
 
-        <button>Send</button>
+        <button className="px-5 py-2 mt-4 transition duration-200 border-none rounded bg-primary place-self-end hover:bg-orange-600">
+          {!isLoading ? "Send" : "Sending..."}
+        </button>
       </form>
     </section>
   );
