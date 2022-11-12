@@ -18,7 +18,7 @@ export const Layout = ({children}: LayoutProps) => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <header className="sticky top-0 z-20 w-full">
+      <header className="sticky top-0 z-20 w-full border-b-2 bg-background border-parragraf">
         <nav className="flex h-16 mx-auto max-w-screen-standar items-center justify-end gap-2 pl-[max(env(safe-area-inset-left),1.5rem)] pr-[max(env(safe-area-inset-right),1.5rem)]">
           <div className="mr-auto text-xl">
             <Link href="/">Web3RSVP</Link>

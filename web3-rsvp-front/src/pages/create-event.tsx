@@ -30,8 +30,7 @@ const CreateEvent: NextPage = () => {
       BigNumber.from(0),
     ],
   });
-  const {data, isLoading, isSuccess, write} =
-    useContractWrite(config);
+  const {isLoading, isSuccess, write} = useContractWrite(config);
 
   const onSubmit = async ({
     name,
