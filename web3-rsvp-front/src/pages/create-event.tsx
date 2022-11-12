@@ -74,10 +74,10 @@ const CreateEvent: NextPage = () => {
   };
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col w-7/12">
       <h1 className="my-10 text-5xl">Create your virtual event</h1>
       <form
-        className="flex flex-col gap-6"
+        className="flex flex-col gap-10"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
@@ -89,11 +89,13 @@ const CreateEvent: NextPage = () => {
         />
         <DateTimeInput
           dateId="date"
+          description="Your event date and time"
           label="Date & Time"
           register={register}
           timeId="time"
         />
         <Input
+          description="Limit the number of spots available for your event"
           id="capacity"
           label="Max capacity"
           min={1}
@@ -102,6 +104,7 @@ const CreateEvent: NextPage = () => {
           type="number"
         />
         <Input
+          description="Require a refundable deposit (in MATIC) to reserve one spot at your event"
           id="refundable"
           label="Refundable deposit"
           min={0}
@@ -111,6 +114,7 @@ const CreateEvent: NextPage = () => {
           type="number"
         />
         <Input
+          description="The link for your virtual event"
           id="link"
           label="Event link"
           placeholder="Enter url..."
@@ -118,6 +122,7 @@ const CreateEvent: NextPage = () => {
           type="text"
         />
         <Input
+          description="The image for your event (be creative)"
           id="image"
           label="Event image"
           placeholder="Choose your image..."
@@ -126,6 +131,7 @@ const CreateEvent: NextPage = () => {
         />
         <Input
           textArea
+          description="Let people know what your event is about!"
           id="description"
           label="Event description"
           placeholder="Enter an amazing description..."

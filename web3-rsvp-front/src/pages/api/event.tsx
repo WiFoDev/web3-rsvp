@@ -1,4 +1,4 @@
-import { apiRoute } from "@/server";
+import {apiRoute} from "@/server";
 
 export const config = {
   api: {

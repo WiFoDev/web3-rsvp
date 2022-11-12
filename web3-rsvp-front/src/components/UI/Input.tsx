@@ -6,6 +6,7 @@ type InputPropTypes = {
   id: string;
   register: UseFormRegister<any>;
   type: string;
+  description?: string;
   placeholder: string;
   textArea?: boolean;
   min?: number;
@@ -17,6 +18,7 @@ export const Input = ({
   label,
   id,
   type,
+  description,
   placeholder,
   textArea,
   min,
@@ -24,8 +26,13 @@ export const Input = ({
 }: InputPropTypes) => {
   if (textArea)
     return (
-      <label className="flex items-center">
-        <span className="basis-1/3">{label}</span>
+      <label className="flex items-center gap-10">
+        <div className="basis-1/3">
+          <span>{label}</span>
+          {Boolean(description) && (
+            <p className="text-sm">{description}</p>
+          )}
+        </div>
         <textarea
           placeholder={placeholder}
           {...register(id)}
@@ -36,8 +43,13 @@ export const Input = ({
     );
 
   return (
-    <label className="flex items-center">
-      <span className="basis-1/3">{label}</span>
+    <label className="flex items-center gap-10">
+      <div className="basis-1/3">
+        <span>{label}</span>
+        {Boolean(description) && (
+          <p className="text-sm">{description}</p>
+        )}
+      </div>
       <input
         min={min}
         placeholder={placeholder}
