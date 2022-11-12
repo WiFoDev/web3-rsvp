@@ -1,9 +1,14 @@
 import {NextPage} from "next";
 import {useForm} from "react-hook-form";
-import {useContractWrite, usePrepareContractWrite} from "wagmi";
-import {BigNumber, ethers, utils} from "ethers";
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
+import {BigNumber, utils} from "ethers";
+import {useState} from "react";
 
-import {DateTimeInput, Input} from "@/components";
+import {DateTimeInput, Input, Modal} from "@/components";
 import {abi, address} from "@/utils/web3rsvp";
 
 type EventInputs = {
@@ -19,6 +24,8 @@ type EventInputs = {
 
 const CreateEvent: NextPage = () => {
   const {register, handleSubmit} = useForm<EventInputs>();
+  const [isFetchingLoading, setFetchingLoading] = useState(false);
+
   const {config} = usePrepareContractWrite({
     address,
     abi,
@@ -30,7 +37,11 @@ const CreateEvent: NextPage = () => {
       BigNumber.from(0),
     ],
   });
-  const {isLoading, isSuccess, write} = useContractWrite(config);
+  const {data, writeAsync} = useContractWrite(config);
+
+  const {isLoading, isSuccess} = useWaitForTransaction({
+    hash: data?.hash,
+  });
 
   const onSubmit = async ({
     name,
@@ -42,6 +53,7 @@ const CreateEvent: NextPage = () => {
     description,
     image,
   }: EventInputs) => {
+    setFetchingLoading(true);
     const dateTime = new Date(`${date}T${time}`).getTime();
 
     const formData = new FormData();
@@ -60,8 +72,8 @@ const CreateEvent: NextPage = () => {
     ).then((res) => res.json());
 
     if (success) {
-      if (!write) return;
-      write({
+      if (!writeAsync) return;
+      await writeAsync({
         recklesslySetUnpreparedArgs: [
           cid as string,
           BigNumber.from(dateTime),
@@ -70,10 +82,13 @@ const CreateEvent: NextPage = () => {
         ],
       });
     }
+    setFetchingLoading(false);
   };
 
   return (
     <section className="flex flex-col w-7/12">
+      {(isLoading || isFetchingLoading) && <Modal isLoading />}
+      {isSuccess && <Modal isSuccess link="/" />}
       <h1 className="my-10 text-5xl">Create your virtual event</h1>
       <form
         className="flex flex-col gap-10"
@@ -139,7 +154,7 @@ const CreateEvent: NextPage = () => {
         />
 
         <button className="px-5 py-2 mt-4 transition duration-200 border-none rounded bg-primary place-self-end hover:bg-orange-600">
-          {!isLoading ? "Send" : "Sending..."}
+          Send
         </button>
       </form>
     </section>
