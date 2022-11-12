@@ -7,13 +7,13 @@ import {Portal} from "@/HOC";
 type ModalProps = {
   isLoading?: boolean;
   isSuccess?: boolean;
-  link?: string;
+  eventID?: string;
 };
 
 export const Modal: FC<ModalProps> = ({
   isLoading,
   isSuccess,
-  link,
+  eventID,
 }) => {
   return (
     <Portal>
@@ -38,9 +38,9 @@ export const Modal: FC<ModalProps> = ({
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                   />
                 </svg>
               </div>
@@ -51,9 +51,9 @@ export const Modal: FC<ModalProps> = ({
               ? "Creating Event..."
               : "Event created sucessfully"}
           </p>
-          {link && (
+          {eventID && (
             <div className="underline text-background">
-              <Link href={link}>Go to your event</Link>
+              <Link href={`events/${eventID}`}>Go to your event</Link>
             </div>
           )}
         </div>

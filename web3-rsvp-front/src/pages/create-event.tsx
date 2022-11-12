@@ -1,6 +1,7 @@
 import {NextPage} from "next";
 import {useForm} from "react-hook-form";
 import {
+  useContractEvent,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
@@ -25,6 +26,7 @@ type EventInputs = {
 const CreateEvent: NextPage = () => {
   const {register, handleSubmit} = useForm<EventInputs>();
   const [isFetchingLoading, setFetchingLoading] = useState(false);
+  const [eventID, setEventId] = useState("");
 
   const {config} = usePrepareContractWrite({
     address,
@@ -41,6 +43,15 @@ const CreateEvent: NextPage = () => {
 
   const {isLoading, isSuccess} = useWaitForTransaction({
     hash: data?.hash,
+  });
+
+  useContractEvent({
+    address,
+    abi,
+    eventName: "NewEventCreated",
+    listener(eventID) {
+      setEventId(eventID);
+    },
   });
 
   const onSubmit = async ({
@@ -88,7 +99,7 @@ const CreateEvent: NextPage = () => {
   return (
     <section className="flex flex-col w-7/12">
       {(isLoading || isFetchingLoading) && <Modal isLoading />}
-      {isSuccess && <Modal isSuccess link="/" />}
+      {isSuccess && <Modal isSuccess eventID={eventID} />}
       <h1 className="my-10 text-5xl">Create your virtual event</h1>
       <form
         className="flex flex-col gap-10"
